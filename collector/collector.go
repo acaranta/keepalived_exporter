@@ -86,9 +86,11 @@ func New() (*Collector, error) {
 	c := &Collector{}
 
 	labelsVrrp := []string{"name", "intf", "vrid", "state"}
+	labelsVrrpState := []string{"name", "intf", "vrid"}
 
 	metrics := map[string]*prometheus.Desc{
 		"keepalived_up":                       prometheus.NewDesc("keepalived_up", "Status", nil, nil),
+		"keepalived_vrrp_state":         	   prometheus.NewDesc("keepalived_vrrp_state", "State of VRRP item", labelsVrrpState, nil),
 		"keepalived_vrrp_advert_rcvd":         prometheus.NewDesc("keepalived_vrrp_advert_rcvd", "Advertisements received", labelsVrrp, nil),
 		"keepalived_vrrp_advert_sent":         prometheus.NewDesc("keepalived_vrrp_advert_sent", "Advertisements sent", labelsVrrp, nil),
 		"keepalived_vrrp_become_master":       prometheus.NewDesc("keepalived_vrrp_become_master", "Became master", labelsVrrp, nil),
@@ -163,7 +165,8 @@ func (c *Collector) Collect(ch chan<- prometheus.Metric) {
 		if _, ok := states[st.Data.State]; ok {
 			state = states[st.Data.State]
 		}
-
+		ch <- prometheus.MustNewConstMetric(c.metrics["keepalived_vrrp_state"], prometheus.GaugeValue,
+			float64(st.Data.State), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid))
 		ch <- prometheus.MustNewConstMetric(c.metrics["keepalived_vrrp_advert_rcvd"], prometheus.CounterValue,
 			float64(st.Stats.AdvertRcvd), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid), state)
 		ch <- prometheus.MustNewConstMetric(c.metrics["keepalived_vrrp_advert_sent"], prometheus.CounterValue,
