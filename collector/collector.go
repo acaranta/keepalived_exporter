@@ -160,10 +160,6 @@ func (c *Collector) Collect(ch chan<- prometheus.Metric) {
 	ch <- prometheus.MustNewConstMetric(c.metrics["keepalived_up"], prometheus.GaugeValue, 1)
 
 	for _, st := range ka {
-		var state string
-		if _, ok := states[st.Data.State]; ok {
-			state = states[st.Data.State]
-		}
 		ch <- prometheus.MustNewConstMetric(c.metrics["keepalived_vrrp_state"], prometheus.GaugeValue,
 			float64(st.Data.State), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid))
 		ch <- prometheus.MustNewConstMetric(c.metrics["keepalived_vrrp_advert_rcvd"], prometheus.CounterValue,
