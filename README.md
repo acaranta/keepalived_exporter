@@ -44,3 +44,18 @@ Prometheus exporter for [Keepalived](https://keepalived.org) metrics.
 | keepalived_lvs_rs_in_bytes          | RS in bytes                   |
 | keepalived_lvs_rs_out_bytes         | RS out bytes                  |
 | keepalived_lvs_rs_conn              | RS connections                |
+
+| Gauges                              | Notes                         |
+|-------------------------------------|-------------------------------|
+| keepalived_up                       | Keepalived State [0-1]        |
+| keepalived_vrrp_state               | VRRP Item State [0-3]         |
+
+Note :
+- Keepalived State :
+  - 0 : DOWN
+  - 1 : UP
+- VRRP State :
+  - 0 : INIT
+  - 1 : BACKUP
+  - 2 : MASTER
+  - 3 : FAIL
