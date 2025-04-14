@@ -85,12 +85,11 @@ type Collector struct {
 func New() (*Collector, error) {
 	c := &Collector{}
 
-	labelsVrrp := []string{"name", "intf", "vrid", "state"}
-	labelsVrrpState := []string{"name", "intf", "vrid"}
+	labelsVrrp := []string{"name", "intf", "vrid"}
 
 	metrics := map[string]*prometheus.Desc{
 		"keepalived_up":                       prometheus.NewDesc("keepalived_up", "Status", nil, nil),
-		"keepalived_vrrp_state":         	   prometheus.NewDesc("keepalived_vrrp_state", "State of VRRP item", labelsVrrpState, nil),
+		"keepalived_vrrp_state":         	   prometheus.NewDesc("keepalived_vrrp_state", "State of VRRP item", labelsVrrp, nil),
 		"keepalived_vrrp_advert_rcvd":         prometheus.NewDesc("keepalived_vrrp_advert_rcvd", "Advertisements received", labelsVrrp, nil),
 		"keepalived_vrrp_advert_sent":         prometheus.NewDesc("keepalived_vrrp_advert_sent", "Advertisements sent", labelsVrrp, nil),
 		"keepalived_vrrp_become_master":       prometheus.NewDesc("keepalived_vrrp_become_master", "Became master", labelsVrrp, nil),
@@ -168,33 +167,33 @@ func (c *Collector) Collect(ch chan<- prometheus.Metric) {
 		ch <- prometheus.MustNewConstMetric(c.metrics["keepalived_vrrp_state"], prometheus.GaugeValue,
 			float64(st.Data.State), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid))
 		ch <- prometheus.MustNewConstMetric(c.metrics["keepalived_vrrp_advert_rcvd"], prometheus.CounterValue,
-			float64(st.Stats.AdvertRcvd), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid), state)
+			float64(st.Stats.AdvertRcvd), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid))
 		ch <- prometheus.MustNewConstMetric(c.metrics["keepalived_vrrp_advert_sent"], prometheus.CounterValue,
-			float64(st.Stats.AdvertSent), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid), state)
+			float64(st.Stats.AdvertSent), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid))
 		ch <- prometheus.MustNewConstMetric(c.metrics["keepalived_vrrp_become_master"], prometheus.CounterValue,
-			float64(st.Stats.BecomeMaster), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid), state)
+			float64(st.Stats.BecomeMaster), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid))
 		ch <- prometheus.MustNewConstMetric(c.metrics["keepalived_vrrp_release_master"], prometheus.CounterValue,
-			float64(st.Stats.ReleaseMaster), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid), state)
+			float64(st.Stats.ReleaseMaster), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid))
 		ch <- prometheus.MustNewConstMetric(c.metrics["keepalived_vrrp_packet_len_err"], prometheus.CounterValue,
-			float64(st.Stats.PacketLenErr), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid), state)
+			float64(st.Stats.PacketLenErr), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid))
 		ch <- prometheus.MustNewConstMetric(c.metrics["keepalived_vrrp_advert_interval_err"], prometheus.CounterValue,
-			float64(st.Stats.AdvertIntervalErr), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid), state)
+			float64(st.Stats.AdvertIntervalErr), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid))
 		ch <- prometheus.MustNewConstMetric(c.metrics["keepalived_vrrp_ip_ttl_err"], prometheus.CounterValue,
-			float64(st.Stats.AdvertIntervalErr), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid), state)
+			float64(st.Stats.AdvertIntervalErr), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid))
 		ch <- prometheus.MustNewConstMetric(c.metrics["keepalived_vrrp_invalid_type_rcvd"], prometheus.CounterValue,
-			float64(st.Stats.InvalidTypeRcvd), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid), state)
+			float64(st.Stats.InvalidTypeRcvd), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid))
 		ch <- prometheus.MustNewConstMetric(c.metrics["keepalived_vrrp_addr_list_err"], prometheus.CounterValue,
-			float64(st.Stats.AddrListErr), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid), state)
+			float64(st.Stats.AddrListErr), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid))
 		ch <- prometheus.MustNewConstMetric(c.metrics["keepalived_vrrp_invalid_authtype"], prometheus.CounterValue,
-			float64(st.Stats.InvalidAuthtype), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid), state)
+			float64(st.Stats.InvalidAuthtype), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid))
 		ch <- prometheus.MustNewConstMetric(c.metrics["keepalived_vrrp_authtype_mismatch"], prometheus.CounterValue,
-			float64(st.Stats.AuthtypeMismatch), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid), state)
+			float64(st.Stats.AuthtypeMismatch), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid))
 		ch <- prometheus.MustNewConstMetric(c.metrics["keepalived_vrrp_auth_failure"], prometheus.CounterValue,
-			float64(st.Stats.AuthFailure), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid), state)
+			float64(st.Stats.AuthFailure), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid))
 		ch <- prometheus.MustNewConstMetric(c.metrics["keepalived_vrrp_pri_zero_rcvd"], prometheus.CounterValue,
-			float64(st.Stats.PriZeroRcvd), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid), state)
+			float64(st.Stats.PriZeroRcvd), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid))
 		ch <- prometheus.MustNewConstMetric(c.metrics["keepalived_vrrp_pri_zero_sent"], prometheus.CounterValue,
-			float64(st.Stats.PriZeroSent), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid), state)
+			float64(st.Stats.PriZeroSent), st.Data.Iname, st.Data.IfpIfname, strconv.Itoa(st.Data.Vrid))
 	}
 
 	if c.handle == nil {
